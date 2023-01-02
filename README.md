@@ -21,12 +21,28 @@ git clone https://github.com/paimooon/YSRes
 pip install kaitaistruct XlsxWriter
 ```
 - Run prepare
-```
+```shell
 python prepare.py
 ```
 - Run main
+```shell
+# example
+python main.py -t -e -o -l KR -i 10000078 -s
 ```
-python main.py
+
+## Argument usage
+```
+usage: main.py [-t] [-e] [-o] [-l LANG] [-i ID] [-s]
+
+Arguments:
+    -t --textmap        # Dump TextMap (-l argument needed)
+    -e --excel          # Dump ExcelBinOutput
+    -o --output         # Generate output (-l, -i argument needed)
+
+    -l --lang [LANG]    # Set language (Example: KR)
+    -i --id [ID]        # Set character id (Example: 10000078)
+
+    -s                  # Xlsx skill short version
 ```
 
 ## BLK info

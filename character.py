@@ -331,7 +331,7 @@ def GenerateRes(parseCharacterID, textMapLanguage, skillOutput):
             ws.set_row(current_row, 200) # Skill issue
             current_row += 1
             
-            if skillOutput.lower() == "s" or skillOutput.lower() == "short":
+            if skillOutput:
                 # start short version
                 ws.merge_range(current_row, 0, current_row, 3, "Modifier", name_format)
                 for j in [0, 9, 12]:

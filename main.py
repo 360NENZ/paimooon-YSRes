@@ -1,4 +1,4 @@
-import character, parse, sys
+import character, parse, sys, argparse
 sys.path.append("./py")
 
 from output import Output
@@ -15,30 +15,56 @@ parseList = {
     "MaterialExcelConfigData": Output.MaterialExcelConfig
 }
 
+def printUsage():
+    print("""
+usage: main.py [-t] [-e] [-o] [-l LANG] [-i ID] [-s]
+
+Arguments:
+    -t --textmap        # Dump TextMap (-l argument needed)
+    -e --excel          # Dump ExcelBinOutput
+    -o --output         # Generate output (-l, -i argument needed)
+
+    -l --lang [LANG]    # Set language (Example: KR)
+    -i --id [ID]        # Set character id (Example: 10000078)
+
+    -s                  # Xlsx skill short version
+    """)
+    sys.exit(1)
+
 if __name__ == "__main__":
-    print("YSRes blk parser tool")
-    print("Place MiHoYoBinData .bin files in the ./bin folder")
-    print("")
+    print("YSRes BLK Parser Tool")
+    print("Place .blk files in the YSRes/blk folder and run prepare.py first\n")
 
-    dumpTextmap = input("Dump Textmap? (y/n, default=y) : ")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-t", "--textmap", dest="textmap", action="store_true")     # dump textmap
+    parser.add_argument("-e", "--excel", dest="excel", action="store_true")         # dump excel
+    parser.add_argument("-o", "--output", dest="output", action="store_true")       # generate output
 
-    if dumpTextmap == "" or dumpTextmap.lower() == "y" or dumpTextmap.lower() == "yes":
-        textMapLanguage = input("Type the textMap Language (Example: KR) : ")
-        print(f"Dumping TextMap_{textMapLanguage}...")
-        parse.GetAllTextmaps(textMapLanguage)
+    parser.add_argument("-l", "--lang", dest="lang", action="store")                # set language
+    parser.add_argument("-i", "--id", type=int, dest="id", action="store")                    # set character id
 
-    dumpExcel = input("Dump ExcelBinOutput? (y/n, default=y) : ")
-    if dumpExcel == "" or dumpExcel.lower() == "y" or dumpExcel.lower() == "yes":
+    parser.add_argument("-s", "--short", dest="short", action="store_true")         # skill short
+
+    args = parser.parse_args()
+
+    if len(sys.argv) < 2:
+        printUsage()
+
+    if args.textmap:
+        if args.lang is not None:
+            parse.GetAllTextmaps(args.lang)
+        else:
+            printUsage()
+    
+    if args.excel:
         for i in parseList.keys():
             print("Parsing " + i)
             parse.UniversalParse(i, parseList[i])
     
-    parseExcel = input("Parse ExcelBinOutput? (y/n, default=y) : ")
-    if parseExcel == "" or parseExcel.lower() == "y" or parseExcel.lower() == "yes":
-        parseCharacterID = int(input("Type the character ID (Example: 10000078) : "))
-        textMapLanguage = input("Type the textMap Language (Example: KR) : ")
-        skillOutput = input("\nType the skill output type\n1~15 Full levels (f, default), 1 10 13 Short levels (s) : ")
-        print("")
-        print("Generating res...")
-        character.GenerateRes(parseCharacterID, textMapLanguage, skillOutput)
-        print("Done")
+    if args.output:
+        if args.lang is not None and args.id is not None:
+            print("Generating res...")
+            character.GenerateRes(args.id, args.lang, args.short)
+        else:
+            printUsage()
+        
