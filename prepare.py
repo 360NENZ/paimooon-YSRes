@@ -1,4 +1,4 @@
-import urllib.request, zipfile, subprocess, shutil
+import urllib.request, zipfile, subprocess, shutil, platform
 
 # replace to the latest one
 textMapLanguage = "KR"
