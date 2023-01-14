@@ -2,7 +2,7 @@ import urllib.request, zipfile, subprocess, shutil, platform
 
 # replace to the latest one
 textMapLanguage = "KR"
-xorKey = "0x94"
+xorKey = "0x95"
 
 supportLanguage = {
     "CHS": "26692920",
