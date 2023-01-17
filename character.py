@@ -483,4 +483,8 @@ def paramListCorrecter(paramList, charaID, skillNum):
     if charaID == 10000077 and skillNum == 2:
         paramList.insert(0, paramList.pop(3))
 
+    if charaID == 10000080 and skillNum == 2:
+        paramList.insert(0, paramList.pop(1))
+        paramList.insert(2, paramList.pop(3))
+
     return paramList
