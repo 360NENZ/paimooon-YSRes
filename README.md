@@ -2,7 +2,7 @@
 
 A Parser of a certain anime game's data files (WIP)
 
-Current target version: 3.4
+Current target version: 3.5
 
 ## Requirements
 
