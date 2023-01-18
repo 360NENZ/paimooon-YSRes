@@ -12,16 +12,12 @@ parseList = {
     "AvatarTalentExcelConfigData": Output.AvatarTalentExcelConfig,
     "AvatarPromoteExcelConfigData": Output.AvatarPromoteExcelConfig,
     "ProudSkillExcelConfigData": Output.ProudSkillExcelConfig,
-    "MaterialExcelConfigData": Output.MaterialExcelConfig
-}
-
-weaponParseList = {
+    "MaterialExcelConfigData": Output.MaterialExcelConfig,
     "EquipAffixExcelConfigData": Output.EquipAffixExcelConfig,
     "WeaponExcelConfigData": Output.WeaponExcelConfig,
     "WeaponCurveExcelConfigData": Output.WeaponCurveExcelConfig,
     "WeaponPromoteExcelConfigData": Output.WeaponPromoteExcelConfig,
     "WeaponLevelExcelConfigData": Output.WeaponLevelExcelConfig,
-    "MaterialExcelConfigData": Output.MaterialExcelConfig
 }
 
 def printUsage():
@@ -82,11 +78,7 @@ if __name__ == "__main__":
             printUsage()
     
     if args.weapon:
-        if args.lang is not None and args.id is not None:            
-            for i in weaponParseList.keys():
-                print("Parsing " + i)
-                parse.UniversalParse(i, weaponParseList[i])
-
+        if args.lang is not None and args.id is not None:
             print("Generating weapon res...")
             weapon.GenerateRes(args.id, args.lang)
         else:
