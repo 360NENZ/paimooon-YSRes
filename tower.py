@@ -6,57 +6,58 @@ import subprocess
 from multiprocessing import Process
 from datetime import datetime
 
+import character, parse
+
 sys.path.append("./py")
 from textmap import Textmap
+from output import Output
 
-def DumpTowerSchedule():
-    cmd = ['ksdump', '-f', 'json', './bin/ExcelBinOutput/TowerScheduleExcelConfigData.bin', './ksy/tower_schedule.ksy']
+# add json if u want
+parseList = {
+    "TowerScheduleExcelConfigData": Output.TowerScheduleExcelConfig,
+    "TowerFloorExcelConfigData": Output.TowerFloorExcelConfig,
+    "TowerLevelExcelConfigData": Output.TowerLevelExcelConfig,
+    "DungeonLevelEntityConfigData": Output.DungeonLevelEntityConfig,
+    "MonsterDescribeExcelConfigData": Output.MonsterDescribeExcelConfig,
+}
+    
+def ConvertDescribeId(value, monsterDescribe):
+    for i in monsterDescribe:
+        if i["id"] == value:
+            return i["nameTextMapHash"]
 
-    with open('./json/Dump_TowerScheduleExcelConfigData.json', 'w') as out:
-        return_code = subprocess.call(cmd, stdout=out)
-
-def DumpTowerFloor():
-    cmd = ['ksdump', '-f', 'json', './bin/ExcelBinOutput/TowerFloorExcelConfigData.bin', './ksy/tower_floor.ksy']
-
-    with open('./json/Dump_TowerFloorExcelConfigData.json', 'w') as out:
-        return_code = subprocess.call(cmd, stdout=out)
-
-def DumpTowerLevel():
-    cmd = ['ksdump', '-f', 'json', './bin/ExcelBinOutput/TowerLevelExcelConfigData.bin', './ksy/tower_level.ksy']
-
-    with open('./json/Dump_TowerLevelExcelConfigData.json', 'w') as out:
-        return_code = subprocess.call(cmd, stdout=out)
-
-def DumpDungeonLevel():
-    cmd = ['ksdump', '-f', 'json', './bin/ExcelBinOutput/DungeonLevelEntityConfigData.bin', './ksy/dungeon_level.ksy']
-
-    with open('./json/Dump_DungeonLevelEntityConfigData.json', 'w') as out:
-        return_code = subprocess.call(cmd, stdout=out)
-
-def DumpMonsterDescribe():
-    cmd = ['ksdump', '-f', 'json', './bin/ExcelBinOutput/MonsterDescribeExcelConfigData.bin', './ksy/monster_describe.ksy']
-
-    with open('./json/Dump_MonsterDescribeExcelConfigData.json', 'w') as out:
-        return_code = subprocess.call(cmd, stdout=out)
+def ConvertText(desc):
+    pattern = "<color.*?>(.+?)</color>"
+    desc_parsed = re.split(pattern, desc)
+    
+    return "".join(desc_parsed)
 
 
-def GenerateTower():
+if __name__ == '__main__':
+    print("YSRes blk parser tool")
+    print("Place MiHoYoBinData .bin files in the ./bin folder")
+    print("")
+
     textMapLanguage = input("Type the textMap Language (Example: KR) : ")
     with open(f'./json/TextMap_{textMapLanguage}.json') as textmap_json:
         textmap = json.load(textmap_json)
 
-    with open('./json/Dump_TowerScheduleExcelConfigData.json', 'r') as dump:
+    for i in parseList.keys():
+        print("Parsing " + i)
+        parse.UniversalParse(i, parseList[i])
+
+    with open('./json/TowerScheduleExcelConfigData.json', 'r') as dump:
         towerSchedule = json.load(dump)
-    with open('./json/Dump_TowerFloorExcelConfigData.json', 'r') as dump:
+    with open('./json/TowerFloorExcelConfigData.json', 'r') as dump:
         towerFloor = json.load(dump)
-    with open('./json/Dump_TowerLevelExcelConfigData.json', 'r') as dump:
+    with open('./json/TowerLevelExcelConfigData.json', 'r') as dump:
         towerLevel = json.load(dump)
-    with open('./json/Dump_DungeonLevelEntityConfigData.json', 'r') as dump:
+    with open('./json/DungeonLevelEntityConfigData.json', 'r') as dump:
         dungeonLevel = json.load(dump)
-    with open('./json/Dump_MonsterDescribeExcelConfigData.json', 'r') as dump:
+    with open('./json/MonsterDescribeExcelConfigData.json', 'r') as dump:
         monsterDescribe = json.load(dump)
     
-    print("Last 5 abyss schedule_id:", ", ".join([str(i["schedule_id"]["value"]) for i in towerSchedule["block"][-5:]]))
+    print("Last 5 abyss schedule_id:", ", ".join([str(i["scheduleId"]) for i in towerSchedule[-5:]]))
 
     scheduleIds = list(map(int, input("Type abyss schedule_ids (Example: 20036 20037 20038) : ").split()))
     scheduleId = scheduleIds[0] # hack
@@ -90,35 +91,35 @@ def GenerateTower():
 
     floorList = []
     openTime, closeTime = "", ""
-    for i in towerSchedule["block"]:
-        if i["schedule_id"]["value"] in scheduleIds:
-            floorList = [i["value"] for i in i["schedules"]["data"][0]["floor_list"]["data"]]
+    for i in towerSchedule:
+        if i["scheduleId"] in scheduleIds:
+            floorList = i["schedules"][0]["floorList"]
             
-            if i["schedule_id"]["value"] == scheduleIds[0]: # useless anyway
-                openTime = i["schedules"]["data"][0]["open_time"]["data"]
-            if i["schedule_id"]["value"] == scheduleIds[-1]: # useless anyway
-                closeTime = i["close_time"]["data"] 
+            if i["scheduleId"] == scheduleIds[0]: # useless anyway
+                openTime = i["schedules"][0]["openTime"]
+            if i["scheduleId"] == scheduleIds[-1]: # useless anyway
+                closeTime = i["closeTime"] 
 
-            ws.merge_range(current_row, 0, current_row, 9, textmap[str(i["buffname"]["value"])], desc_format)
+            ws.merge_range(current_row, 0, current_row, 9, textmap[str(i["buffname"])], desc_format)
             current_row += 1
 
-            for j in dungeonLevel["block"]:
-                if j["id"]["value"] == i["monthly_level_config_id"]["value"]:
-                    ws.merge_range(current_row, 0, current_row, 9, ConvertText(textmap[str(j["desc"]["value"])]), desc_format)
+            for j in dungeonLevel:
+                if j["id"] == i["monthlyLevelConfigId"]:
+                    ws.merge_range(current_row, 0, current_row, 9, ConvertText(textmap[str(j["descTextMapHash"])]), desc_format)
                     current_row += 1
 
             #print("icon: " + i["icon"]["data"])
     
 
-    for i in towerFloor["block"]:
-        if i["floor_id"]["value"] in floorList:
+    for i in towerFloor:
+        if i["floorId"] in floorList:
             current_row += 1
             # print("===")
             # print("Floor id: " + str(i["floor_id"]["value"]))
             # print("Floor index: " + )
             # print("levelGroupId: " + str(i["level_group_id"]["value"]))
             
-            ws.merge_range(current_row, 0, current_row, 9, str(i["floor_index"]["value"]), name_format)
+            ws.merge_range(current_row, 0, current_row, 9, str(i["floorIndex"]), name_format)
             current_row += 1
             ws.merge_range(current_row, 0, current_row, 9, "Version: " + ysVersion, desc_format)
             current_row += 1
@@ -127,26 +128,26 @@ def GenerateTower():
             ws.merge_range(current_row, 0, current_row, 9, "Buff List:", desc_format)
             current_row += 1
 
-            for j in dungeonLevel["block"]:
-                if j["id"]["value"] == i["floor_level_config_id"]["value"]:
-                    if textmap[str(j["desc"]["value"])] != "":
-                        ws.merge_range(current_row, 0, current_row, 9, textmap[str(j["desc"]["value"])], desc_format)
+            for j in dungeonLevel:
+                if j["id"] == i["floorLevelConfigId"]:
+                    if textmap[str(j["descTextMapHash"])] != "":
+                        ws.merge_range(current_row, 0, current_row, 9, textmap[str(j["descTextMapHash"])], desc_format)
                         current_row += 1
 
-            for j in towerLevel["block"]:
-                if j["level_group_id"]["value"] == i["level_group_id"]["value"]:
-                    floor = str(i["floor_index"]["value"])
-                    room = str(j["level_index"]["value"])
-                    monsterLevel = str(j["monster_level"]["value"]+1)
+            for j in towerLevel:
+                if j["levelGroupId"] == i["levelGroupId"]:
+                    floor = str(i["floorIndex"])
+                    room = str(j["levelIndex"])
+                    monsterLevel = str(j["monsterLevel"]+1)
                     # cond_upper = "/".join([str(conds["argument_list_upper"]["data"][1]["value"]) for conds in j["conds"]["data"]])
-                    cond = "/".join([str(conds["argument_list"]["data"][1]["value"]) for conds in j["conds"]["data"]])
+                    cond = "/".join([str(conds["argumentList"][1]) for conds in j["conds"]])
                     
                     ws.merge_range(current_row, 0, current_row, 9, floor + "-" + room + " " + cond + " Lv." + monsterLevel , name_format)
                     current_row += 1
 
 
-                    monster1 = [textmap[str(ConvertDescribeId(monster["value"], monsterDescribe))] for monster in j["first_monster_list"]["data"]]
-                    monster2 = [textmap[str(ConvertDescribeId(monster["value"], monsterDescribe))] for monster in j["second_monster_list"]["data"]]
+                    monster1 = [textmap[str(ConvertDescribeId(monster, monsterDescribe))] for monster in j["firstMonsterList"]]
+                    monster2 = [textmap[str(ConvertDescribeId(monster, monsterDescribe))] for monster in j["secondMonsterList"]]
                     
                     max_row = max(len(monster1), len(monster2))
                     
@@ -160,36 +161,3 @@ def GenerateTower():
                     
             
     wb.close()
-    
-def ConvertDescribeId(value, monsterDescribe):
-    for i in monsterDescribe["block"]:
-        if i["id"]["value"] == value:
-            return i["name"]["value"]
-
-def ConvertText(desc):
-    pattern = "<color.*?>(.+?)</color>"
-    desc_parsed = re.split(pattern, desc)
-    
-    return "".join(desc_parsed)
-
-
-if __name__ == '__main__':
-    print("YSRes blk parser tool")
-    print("Place MiHoYoBinData .bin files in the ./bin folder")
-    print("")
-    
-    # Arg would support later
-
-    dumpTower = input("Dump tower? : ")
-
-    if dumpTower == "y": # I'm lazy
-        DumpTowerFloor()
-        DumpTowerLevel()
-        DumpTowerSchedule()
-        DumpMonsterDescribe()
-        DumpDungeonLevel()
-    
-    parseTower = input("Parse tower? : ")
-
-    if parseTower == "y":
-        GenerateTower()

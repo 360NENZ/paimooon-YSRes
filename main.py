@@ -1,4 +1,4 @@
-import character, parse, sys, argparse
+import character, weapon, parse, sys, argparse
 sys.path.append("./py")
 
 from output import Output
@@ -15,19 +15,30 @@ parseList = {
     "MaterialExcelConfigData": Output.MaterialExcelConfig
 }
 
+weaponParseList = {
+    "EquipAffixExcelConfigData": Output.EquipAffixExcelConfig,
+    "WeaponExcelConfigData": Output.WeaponExcelConfig,
+    "WeaponCurveExcelConfigData": Output.WeaponCurveExcelConfig,
+    "WeaponPromoteExcelConfigData": Output.WeaponPromoteExcelConfig,
+    "WeaponLevelExcelConfigData": Output.WeaponLevelExcelConfig,
+    "MaterialExcelConfigData": Output.MaterialExcelConfig
+}
+
 def printUsage():
     print("""
-usage: main.py [-t] [-e] [-o] [-l LANG] [-i ID] [-s]
+usage: main.py [-t] [-e] [-o] [-l LANG] [-i ID] [-s] [-w]
 
 Arguments:
     -t --textmap        # Dump TextMap (-l argument needed)
     -e --excel          # Dump ExcelBinOutput
-    -o --output         # Generate output (-l, -i argument needed)
+    -o --output         # Generate character output (-l, -i argument needed)
 
     -l --lang [LANG]    # Set language (Example: KR)
     -i --id [ID]        # Set character id (Example: 10000078)
 
     -s                  # Xlsx skill short version
+
+    -w --weapon         # Generate weapon output (-l, -i argument needed)
     """)
     sys.exit(1)
 
@@ -45,6 +56,8 @@ if __name__ == "__main__":
 
     parser.add_argument("-s", "--short", dest="short", action="store_true")         # skill short
 
+    parser.add_argument("-w", "--weapon", dest="weapon", action="store_true")
+    
     args = parser.parse_args()
 
     if len(sys.argv) < 2:
@@ -67,4 +80,16 @@ if __name__ == "__main__":
             character.GenerateRes(args.id, args.lang, args.short)
         else:
             printUsage()
+    
+    if args.weapon:
+        if args.lang is not None and args.id is not None:            
+            for i in weaponParseList.keys():
+                print("Parsing " + i)
+                parse.UniversalParse(i, weaponParseList[i])
+
+            print("Generating weapon res...")
+            weapon.GenerateRes(args.id, args.lang)
+        else:
+            printUsage()
+        
         

@@ -2,6 +2,7 @@
 json/Dump_*.json
 
 # test files
+bin/
 py/test.ksy
 ai.json
 studio.zip
