@@ -5,6 +5,7 @@ from output import Output
 
 # add json if u want
 parseList = {
+    "AvatarCurveExcelConfigData": Output.AvatarCurveExcelConfig,
     "AvatarExcelConfigData": Output.AvatarExcelConfig,
     "AvatarSkillDepotExcelConfigData": Output.AvatarSkillDepotExcelConfig,
     "AvatarSkillExcelConfigData": Output.AvatarSkillExcelConfig,
