@@ -1,6 +1,6 @@
 from kaitaistruct import KaitaiStream
 from io import BytesIO
-import glob, sys, json
+import glob, sys, json, os
 
 sys.path.append("./py")
 from textmap import Textmap
