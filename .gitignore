@@ -1,5 +1,5 @@
 # Exclude Dumped files
-json/Dump_*.json
+json/
 
 # test files
 bin/

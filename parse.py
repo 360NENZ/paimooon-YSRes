@@ -26,6 +26,7 @@ def GetAllTextmaps(textMapLanguage):
             for block in obj.textmap:
                 output[str(block.hash.value)] = block.string.data
 
+    os.makedirs("./json", exist_ok=True)
     with open("./json/TextMap_" + textMapLanguage + ".json", "w", encoding='utf-8') as json_file:
         json.dump(output, json_file, indent=4, ensure_ascii=False)
 
@@ -45,6 +46,7 @@ def UniversalParse(outputName, outputClass):
             block = outputClass(stream)
             output_json.append(ParseProperties(block))
 
+    os.makedirs("./json", exist_ok=True)
     with open(f'./json/{outputName}.json', 'w') as json_file:
         json.dump(output_json, json_file, indent=4)
 
