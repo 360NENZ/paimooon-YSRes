@@ -19,7 +19,7 @@ def characterExtraction(textmap, charID):
     }
 
     for file in files:
-        with open(os.path.join(os.path.dirname(__file__), f'./json/{file}.json')) as json_file:
+        with open(os.path.join(os.path.dirname(__file__), f'./json/{file}.json'), encoding='utf-8') as json_file:
             files[file] = json.load(json_file)
 
     character(textmap, charID, files)
@@ -199,17 +199,17 @@ def character(textmap, charID, files):
     }
 
     os.makedirs(os.path.join(os.path.dirname(__file__), f'res/'), exist_ok=True)
-    with open(os.path.join(os.path.dirname(__file__), f'res/{charID}.json'), 'w') as output_file:
+    with open(os.path.join(os.path.dirname(__file__), f'res/{charID}.json'), 'w', encoding='utf-8') as output_file:
         json.dump(json_dict, output_file, indent=4, ensure_ascii=False)
 
 # Excel Parser
 def GenerateRes(parseCharacterID, textMapLanguage, skillOutput):
-    with open(os.path.join(os.path.dirname(__file__), f'json/TextMap_{textMapLanguage}.json')) as textmap_json:
+    with open(os.path.join(os.path.dirname(__file__), f'json/TextMap_{textMapLanguage}.json'), encoding='utf-8') as textmap_json:
         textmap = json.load(textmap_json)
 
     characterExtraction(textmap, parseCharacterID)
 
-    with open(os.path.join(os.path.dirname(__file__), f'res/{parseCharacterID}.json')) as dump:
+    with open(os.path.join(os.path.dirname(__file__), f'res/{parseCharacterID}.json'), encoding='utf-8') as dump:
         res = json.load(dump)
     
         wb = xlsxwriter.Workbook(f'./res/{parseCharacterID}.xlsx')
