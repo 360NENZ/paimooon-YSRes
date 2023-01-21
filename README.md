@@ -48,7 +48,10 @@ Arguments:
 ## BLK info
 
 ```
+00/24230448 => BinOutput
 00/25539185 => ExcelBinOutput (must need)
+00/31049740 => Asset Index
+00/35323818 => Lua Scripts
 01/26692920 => CHS
 02/27251172 => 
 03/25181351 => 
