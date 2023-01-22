@@ -27,17 +27,21 @@ python prepare.py
 - Run main
 ```shell
 # example
-python main.py -t -e -o -l KR -i 10000078 -s
+python main.py -t -e -o -l KR -i 10000079 -s
+python main.py -o -l KR -i 10000080
+python main.py -w -l KR -i 12511
+python tower.py
 ```
 
 ## Argument usage
 ```
-usage: main.py [-t] [-e] [-o] [-l LANG] [-i ID] [-s]
+usage: main.py [-t] [-e] [-o] [-w] [-l LANG] [-i ID] [-s] 
 
 Arguments:
     -t --textmap        # Dump TextMap (-l argument needed)
     -e --excel          # Dump ExcelBinOutput
-    -o --output         # Generate output (-l, -i argument needed)
+    -o --output         # Generate character output (-l, -i argument needed)
+    -w --weapon         # Generate weapon output (-l, -i argument needed)
 
     -l --lang [LANG]    # Set language (Example: KR)
     -i --id [ID]        # Set character id (Example: 10000078)
@@ -66,11 +70,12 @@ Arguments:
 12/32056053 => TH
 13/34382464 => VI
 ```
+YSRes currently use only ExcelBinOutput and textmap
 
 ## Future Goals
 
-- Args support
 - GenerateElemBall data
+- Abyss monster detailed info
 
 ## Credit
 - partypooper for the original [KaitaiDumper](https://github.com/partypooperarchive/KaitaiDumper)
