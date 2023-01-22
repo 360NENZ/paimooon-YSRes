@@ -6,9 +6,20 @@ xorKey = "0x95"
 
 supportLanguage = {
     "CHS": "26692920",
+    "CHT": "27251172",
+    "DE": "25181351",
     "EN": "25776943",
-    "KR": "22299426"
+    "ES": "20618174",
+    "FR": "25555476",
+    "ID": "30460104",
+    "JP": "32244380",
+    "KR": "22299426",
+    "PT": "23331191",
+    "RU": "21030516",
+    "TH": "32056053",
+    "VI": "34382464"
 }
+
 
 asset_studio = "https://github.com/paimooon/YSRes/files/10318744/net472.zip"
 mapped_ai_json = "https://github.com/14eyes/gi-asset-indexes/blob/master/mapped/GenshinImpact_3.3.50_beta.zip_31049740.blk.asset_index.json?raw=true"
