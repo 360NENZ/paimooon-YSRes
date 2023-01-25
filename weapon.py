@@ -150,58 +150,37 @@ def GenerateRes(parseWeaponID, textMapLanguage):
 
         ws.merge_range('A3:B3', "Weapon", name_format)
         ws.merge_range('C3:D3', weapon_dic[res["WeaponType"]], desc_format)
-        
-        ws.merge_range('E2:F2', "Base ATK", name_format)
-
-        print("\n==========")
-        print(res["Name"])
-        print(res["Desc"])
-        print(f'Rarity: {res["Rarity"]}')
-        print(f'Type: {weapon_dic[res["WeaponType"]]}')
 
         for stat in res["StatsModifier"].keys():
             statCalc = res["StatsModifier"][stat]["Base"] * res["StatsModifier"][stat]["Levels"]["90"]
             
             if stat == "ATK":
-                print(f'Base ATK: {int(statCalc + res["Ascension"]["6"]["FIGHT_PROP_BASE_ATTACK"])}')
-                ws.merge_range('G2:H2', res["Rarity"], desc_format)
+                ws.merge_range('E2:F2', "Base ATK", name_format)
+                ws.merge_range('G2:H2', int(statCalc + res["Ascension"]["6"]["FIGHT_PROP_BASE_ATTACK"]), desc_format)
             elif stat == "FIGHT_PROP_ELEMENT_MASTERY":
-                print(f"{asc_dic[stat]}: {'{:0.0f}'.format(statCalc)}")
                 ws.merge_range('E3:F3', asc_dic[stat], name_format)
                 ws.merge_range('G3:H3', '{:0.0f}'.format(statCalc), desc_format )
             else:
-                print(f"{asc_dic[stat]}: {'{:.1%}'.format(statCalc)}")
                 ws.merge_range('E3:F3', asc_dic[stat], name_format)
                 ws.merge_range('G3:H3', '{:.1%}'.format(statCalc), desc_format )
         
-        print()
-
         ws.merge_range('A6:J6', "Promote Costs", name_format)
 
         for i in range(6):
             items = []
             ws.write(i+6, 0, i+1, name_format)
             for j in res["Materials"][str(i+1)]["Mats"]:
-                #print(i)
                 items.append(j["Name"] + " x" + str(j["Count"]))
             
-            print(", ".join(items))
             ws.merge_range(i+6, 1, i+6, 9, ", ".join(items), desc_format)
-        print()
-
 
         ws.merge_range('A14:L14', res["Refinement"]["1"]["Name"], name_format)
 
-        print(res["Refinement"]["1"]["Name"])
         for i in range(5):
             items = []
-            print("\nRefinement Level", i)
-            print(ConvertText(res["Refinement"][str(i+1)]["Desc"]))
             
             ws.merge_range(i+14, 0, i+14, 1, "Refinement Level " + str( i + 1), name_format)
             ws.merge_range(i+14, 2, i+14, 11, ConvertText(res["Refinement"][str(i+1)]["Desc"]), desc_format)
             ws.set_row(i+14, 100)
 
-        print("==========")
-        
         wb.close()
