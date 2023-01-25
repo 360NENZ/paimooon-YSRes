@@ -310,7 +310,7 @@ def GenerateRes(parseCharacterID, textMapLanguage, skillOutput):
         for i in range(6):
             ws.merge_range(i+25, 0, i+25, 1, res["Constellations"][i]["Name"], name_format)
             ws.merge_range(i+25, 2, i+25, 11, ConvertText(res["Constellations"][i]["Desc"]), desc_format)
-            ws.write(i+25, 12, str([i for i in res["Constellations"][i]["ParamList"] if i != 0.0]), desc_format) 
+            ws.write(i+25, 12, str([round(i, 6) for i in res["Constellations"][i]["ParamList"] if i != 0.0]), desc_format) 
             ws.set_row(i+25, 100)
 
         ws.merge_range('A33:L33', "Passives", name_format)
@@ -319,7 +319,7 @@ def GenerateRes(parseCharacterID, textMapLanguage, skillOutput):
         for i in range(len(res["Passives"])):
             ws.merge_range(i+33, 0, i+33, 1, res["Passives"][i]["Name"], name_format)
             ws.merge_range(i+33, 2, i+33, 11, ConvertText(res["Passives"][i]["Desc"]), desc_format)
-            ws.write(i+33, 12, str([i for i in res["Passives"][i]["ParamList"] if i != 0.0]), desc_format)
+            ws.write(i+33, 12, str([round(i, 6) for i in res["Passives"][i]["ParamList"] if i != 0.0]), desc_format)
             ws.set_row(i+33, 100) # Skill issue
 
         current_row = current_row + len(res["Passives"]) + 1
