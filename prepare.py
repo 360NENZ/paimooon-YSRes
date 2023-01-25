@@ -1,7 +1,7 @@
 import urllib.request, zipfile, subprocess, shutil, platform
 
 # replace to the latest one
-textMapLanguage = "KR"
+textMapLanguageList = ["KR", "CHS"]
 xorKey = "0x95"
 
 supportLanguage = {
@@ -39,14 +39,13 @@ zipfile.ZipFile("studio.zip", 'r').extractall("./studio/")
 
 # ExcelBinOutput
 subprocess.run(["./studio/AssetStudioCLI.exe", "./blk/25539185.blk", "./ExcelBinOutput/", "--game", "GI", "--ai_file", "./ai.json", "--type", "MiHoYoBinData", "--xor_key", xorKey])
+shutil.move("./ExcelBinOutput/MiHoYoBinData/", "./bin/ExcelBinOutput")
+shutil.rmtree("./ExcelBinOutput")
 
 # TextMap
-subprocess.run(["./studio/AssetStudioCLI.exe", "./blk/" + supportLanguage[textMapLanguage] + ".blk", "./TextMap_" + textMapLanguage + "/", "--game", "GI", "--ai_file", "./ai.json", "--type", "MiHoYoBinData", "--xor_key", xorKey])
-
-shutil.move("./ExcelBinOutput/MiHoYoBinData/", "./bin/ExcelBinOutput")
-shutil.move("./TextMap_" + textMapLanguage + "/MiHoYoBinData/", "./bin/TextMap_" + textMapLanguage)
-
-shutil.rmtree("./ExcelBinOutput")
-shutil.rmtree("./TextMap_" + textMapLanguage)
+for textMapLanguage in textMapLanguageList:
+    subprocess.run(["./studio/AssetStudioCLI.exe", "./blk/" + supportLanguage[textMapLanguage] + ".blk", "./TextMap_" + textMapLanguage + "/", "--game", "GI", "--ai_file", "./ai.json", "--type", "MiHoYoBinData", "--xor_key", xorKey])
+    shutil.move("./TextMap_" + textMapLanguage + "/MiHoYoBinData/", "./bin/TextMap_" + textMapLanguage)
+    shutil.rmtree("./TextMap_" + textMapLanguage)
 
 print("Done")
