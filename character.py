@@ -212,7 +212,7 @@ def GenerateRes(parseCharacterID, textMapLanguage, skillOutput):
     with open(os.path.join(os.path.dirname(__file__), f'res/{textMapLanguage}/{parseCharacterID}.json'), encoding='utf-8') as dump:
         res = json.load(dump)
     
-        wb = xlsxwriter.Workbook(f'./res/{parseCharacterID}.xlsx')
+        wb = xlsxwriter.Workbook(f'./res/{textMapLanguage}/{parseCharacterID}.xlsx')
         ws = wb.add_worksheet()
 
         name_format = wb.add_format({
