@@ -1,7 +1,7 @@
 import urllib.request, zipfile, subprocess, shutil, platform
 
 # replace to the latest one
-textMapLanguageList = ["KR", "CHS"]
+# textMapLanguageList = ["KR", "CHS"]
 xorKey = "0x95"
 
 supportLanguage = {
@@ -19,6 +19,9 @@ supportLanguage = {
     "TH": "32056053",
     "VI": "34382464"
 }
+
+# exclude this if not needed
+textMapLanguageList = supportLanguage.keys()
 
 
 asset_studio = "https://github.com/paimooon/YSRes/files/10318744/net472.zip"
