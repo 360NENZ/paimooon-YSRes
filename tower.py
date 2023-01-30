@@ -62,9 +62,9 @@ if __name__ == '__main__':
     scheduleIds = list(map(int, input("Type abyss schedule_ids (Example: 20036 20037 20038) : ").split()))
     scheduleId = scheduleIds[0] # hack
 
-    ysVersion = input("Type genshin version : ")
+    ysVersion = input("Type anime game version : ")
 
-    wb = xlsxwriter.Workbook(f'./res/{ysVersion}.xlsx')
+    wb = xlsxwriter.Workbook(f'./res/{textMapLanguage}/{ysVersion}.xlsx')
     ws = wb.add_worksheet()
 
     name_format = wb.add_format({

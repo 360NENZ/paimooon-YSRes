@@ -4,7 +4,7 @@ import re
 from pathlib import Path
 import xlsxwriter
 
-def characterExtraction(textmap, charID):
+def characterExtraction(textmap, charID, textMapLanguage):
     files = {
         "AvatarExcelConfigData": {}, # Main character excel
         "AvatarPromoteExcelConfigData": {}, # Character ascension buff
@@ -22,9 +22,9 @@ def characterExtraction(textmap, charID):
         with open(os.path.join(os.path.dirname(__file__), f'./json/{file}.json'), encoding='utf-8') as json_file:
             files[file] = json.load(json_file)
 
-    character(textmap, charID, files)
+    character(textmap, charID, files, textMapLanguage)
 
-def character(textmap, charID, files):
+def character(textmap, charID, files, textMapLanguage):
     # Fix for Beidou, Keqing, Noelle
     correspondanceDict = {"charged attack cycling dmg": "charged attack spinning dmg",
                         "lightning stiletto dmg ": "lightning stiletto dmg",
@@ -198,8 +198,8 @@ def character(textmap, charID, files):
         "Materials": materialsDict
     }
 
-    os.makedirs(os.path.join(os.path.dirname(__file__), f'res/'), exist_ok=True)
-    with open(os.path.join(os.path.dirname(__file__), f'res/{charID}.json'), 'w', encoding='utf-8') as output_file:
+    os.makedirs(os.path.join(os.path.dirname(__file__), f'res/{textMapLanguage}/'), exist_ok=True)
+    with open(os.path.join(os.path.dirname(__file__), f'res/{textMapLanguage}/{charID}.json'), 'w', encoding='utf-8') as output_file:
         json.dump(json_dict, output_file, indent=4, ensure_ascii=False)
 
 # Excel Parser
@@ -207,9 +207,9 @@ def GenerateRes(parseCharacterID, textMapLanguage, skillOutput):
     with open(os.path.join(os.path.dirname(__file__), f'json/TextMap_{textMapLanguage}.json'), encoding='utf-8') as textmap_json:
         textmap = json.load(textmap_json)
 
-    characterExtraction(textmap, parseCharacterID)
+    characterExtraction(textmap, parseCharacterID, textMapLanguage)
 
-    with open(os.path.join(os.path.dirname(__file__), f'res/{parseCharacterID}.json'), encoding='utf-8') as dump:
+    with open(os.path.join(os.path.dirname(__file__), f'res/{textMapLanguage}/{parseCharacterID}.json'), encoding='utf-8') as dump:
         res = json.load(dump)
     
         wb = xlsxwriter.Workbook(f'./res/{parseCharacterID}.xlsx')

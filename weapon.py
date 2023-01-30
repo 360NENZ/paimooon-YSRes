@@ -4,7 +4,7 @@ from pathlib import Path
 import re
 import xlsxwriter
 
-def weaponExtraction(textmap, weaponID):
+def weaponExtraction(textmap, weaponID, textMapLanguage):
     files = {"WeaponExcelConfigData": {},  # Main stats
             "WeaponCurveExcelConfigData": {},  # Stats curves
             "WeaponPromoteExcelConfigData": {}, # Weapon Ascension
@@ -17,9 +17,9 @@ def weaponExtraction(textmap, weaponID):
         with open(os.path.join(os.path.dirname(__file__), f'./json/{file}.json'), encoding='utf-8') as json_file:
             files[file] = json.load(json_file)
 
-    weapon(textmap, weaponID, files)
+    weapon(textmap, weaponID, files, textMapLanguage)
 
-def weapon(textmap, weaponID, files):
+def weapon(textmap, weaponID, files, textMapLanguage):
 
     weaponData = list(filter(lambda x: x['id'] == weaponID, files["WeaponExcelConfigData"]))[0]
 
@@ -83,8 +83,8 @@ def weapon(textmap, weaponID, files):
         "StoryFile": f"Weapon{weaponID}"
     }
     
-    os.makedirs(os.path.join(os.path.dirname(__file__), f'res/'), exist_ok=True)
-    with open(os.path.join(os.path.dirname(__file__), f'res/{weaponID}.json'), 'w', encoding='utf-8') as output_file:
+    os.makedirs(os.path.join(os.path.dirname(__file__), f'res/{textMapLanguage}/'), exist_ok=True)
+    with open(os.path.join(os.path.dirname(__file__), f'res/{textMapLanguage}/{weaponID}.json'), 'w', encoding='utf-8') as output_file:
         json.dump(json_dict, output_file, indent=4, ensure_ascii=False)
 
 def ConvertText(desc):
@@ -94,9 +94,9 @@ def GenerateRes(parseWeaponID, textMapLanguage):
     with open(os.path.join(os.path.dirname(__file__), f'json/TextMap_{textMapLanguage}.json'), encoding='utf-8') as textmap_json:
         textmap = json.load(textmap_json)
 
-    weaponExtraction(textmap, parseWeaponID)
+    weaponExtraction(textmap, parseWeaponID, textMapLanguage)
 
-    with open(os.path.join(os.path.dirname(__file__), f'res/{parseWeaponID}.json'), encoding='utf-8') as dump:
+    with open(os.path.join(os.path.dirname(__file__), f'res/{textMapLanguage}/{parseWeaponID}.json'), encoding='utf-8') as dump:
         res = json.load(dump)
         
         wb = xlsxwriter.Workbook(f'./res/{parseWeaponID}.xlsx')
