@@ -19,6 +19,7 @@ parseList = {
     "WeaponCurveExcelConfigData": Output.WeaponCurveExcelConfig,
     "WeaponPromoteExcelConfigData": Output.WeaponPromoteExcelConfig,
     "WeaponLevelExcelConfigData": Output.WeaponLevelExcelConfig,
+    "ReliquarySetExcelConfigData": Output.ReliquarySetExcelConfig,
 }
 
 def printUsage():
