@@ -69,6 +69,8 @@ Arguments:
 11/21030516 => RU
 12/32056053 => TH
 13/34382464 => VI
+14/27270675 => ??
+15/21419401 => ??
 ```
 YSRes currently use only ExcelBinOutput and textmap
 
