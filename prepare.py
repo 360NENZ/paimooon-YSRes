@@ -47,8 +47,11 @@ shutil.rmtree("./ExcelBinOutput")
 
 # TextMap
 for textMapLanguage in textMapLanguageList:
-    subprocess.run(["./studio/AssetStudioCLI.exe", "./blk/" + supportLanguage[textMapLanguage] + ".blk", "./TextMap_" + textMapLanguage + "/", "--game", "GI", "--ai_file", "./ai.json", "--type", "MiHoYoBinData", "--xor_key", xorKey])
-    shutil.move("./TextMap_" + textMapLanguage + "/MiHoYoBinData/", "./bin/TextMap_" + textMapLanguage)
-    shutil.rmtree("./TextMap_" + textMapLanguage)
+    try:
+        subprocess.run(["./studio/AssetStudioCLI.exe", "./blk/" + supportLanguage[textMapLanguage] + ".blk", "./TextMap_" + textMapLanguage + "/", "--game", "GI", "--ai_file", "./ai.json", "--type", "MiHoYoBinData", "--xor_key", xorKey])
+        shutil.move("./TextMap_" + textMapLanguage + "/MiHoYoBinData/", "./bin/TextMap_" + textMapLanguage)
+        shutil.rmtree("./TextMap_" + textMapLanguage)
+    except:
+        pass
 
 print("Done")
