@@ -185,6 +185,7 @@ def character(textmap, charID, files, textMapLanguage):
         "CharaInfo": charainfo,
         "Weapon": avatarData["weaponType"],
         "Rarity": avatarData["qualityType"],
+        "Icon": avatarData["iconName"],
         "StaminaRecovery": avatarData["staminaRecoverSpeed"],
         "BaseHP": avatarData["hpBase"],
         "BaseATK": avatarData["attackBase"],
@@ -483,6 +484,7 @@ def paramListCorrecter(paramList, charaID, skillNum):
     if charaID == 10000077 and skillNum == 2:
         paramList.insert(0, paramList.pop(3))
 
+    # Mika Fix
     if charaID == 10000080 and skillNum == 2:
         paramList.insert(0, paramList.pop(1))
         paramList.insert(2, paramList.pop(3))
