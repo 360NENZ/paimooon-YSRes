@@ -199,8 +199,8 @@ def character(textmap, charID, files, textMapLanguage):
         "Materials": materialsDict
     }
 
-    os.makedirs(os.path.join(os.path.dirname(__file__), f'res/{textMapLanguage}/'), exist_ok=True)
-    with open(os.path.join(os.path.dirname(__file__), f'res/{textMapLanguage}/{charID}.json'), 'w', encoding='utf-8') as output_file:
+    os.makedirs(os.path.join(os.path.dirname(__file__), f'res/{textMapLanguage}/character/'), exist_ok=True)
+    with open(os.path.join(os.path.dirname(__file__), f'res/{textMapLanguage}/character/{charID}.json'), 'w', encoding='utf-8') as output_file:
         json.dump(json_dict, output_file, indent=4, ensure_ascii=False)
 
 # Excel Parser
@@ -210,10 +210,10 @@ def GenerateRes(parseCharacterID, textMapLanguage, skillOutput):
 
     characterExtraction(textmap, parseCharacterID, textMapLanguage)
 
-    with open(os.path.join(os.path.dirname(__file__), f'res/{textMapLanguage}/{parseCharacterID}.json'), encoding='utf-8') as dump:
+    with open(os.path.join(os.path.dirname(__file__), f'res/{textMapLanguage}/character/{parseCharacterID}.json'), encoding='utf-8') as dump:
         res = json.load(dump)
     
-        wb = xlsxwriter.Workbook(f'./res/{textMapLanguage}/{parseCharacterID}.xlsx')
+        wb = xlsxwriter.Workbook(f'./res/{textMapLanguage}/character/{parseCharacterID}.xlsx')
         ws = wb.add_worksheet()
 
         name_format = wb.add_format({
