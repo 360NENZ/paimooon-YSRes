@@ -1,4 +1,4 @@
-import character, weapon, parse, sys, argparse
+import character, weapon, parse, sys, argparse, prepare
 sys.path.append("./py")
 
 from output import Output
@@ -31,7 +31,7 @@ Arguments:
     -e --excel          # Dump ExcelBinOutput
     -o --output         # Generate character output (-l, -i argument needed)
 
-    -l --lang [LANG]    # Set language (Example: KR)
+    -l --lang [LANG]    # Set language (Example: KR) (ALL available)
     -i --id [ID]        # Set character id (Example: 10000078)
 
     -s                  # Xlsx skill short version
@@ -63,7 +63,11 @@ if __name__ == "__main__":
 
     if args.textmap:
         if args.lang is not None:
-            parse.GetAllTextmaps(args.lang)
+            if args.lang == "ALL":
+                for i in prepare.supportLanguage.keys():
+                    parse.GetAllTextmaps(i)
+            else:
+                parse.GetAllTextmaps(args.lang)
         else:
             printUsage()
     
@@ -75,14 +79,22 @@ if __name__ == "__main__":
     if args.output:
         if args.lang is not None and args.id is not None:
             print("Generating res...")
-            character.GenerateRes(args.id, args.lang, args.short)
+            if args.lang == "ALL":
+                for i in prepare.supportLanguage.keys():
+                    character.GenerateRes(args.id, i, args.short)
+            else:
+                character.GenerateRes(args.id, args.lang, args.short)
         else:
             printUsage()
     
     if args.weapon:
         if args.lang is not None and args.id is not None:
             print("Generating weapon res...")
-            weapon.GenerateRes(args.id, args.lang)
+            if args.lang == "ALL":
+                for i in prepare.supportLanguage.keys():
+                    weapon.GenerateRes(args.id, i)
+            else:
+                weapon.GenerateRes(args.id, args.lang)
         else:
             printUsage()
         
