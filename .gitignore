@@ -1,5 +1,6 @@
 # Exclude Dumped files
 json/
+res/
 
 # test files
 bin/
@@ -7,6 +8,7 @@ py/test.ksy
 ai.json
 studio.zip
 studio/
+bin.zip
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
