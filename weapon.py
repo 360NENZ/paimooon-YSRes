@@ -57,7 +57,7 @@ def weapon(textmap, weaponID, files, textMapLanguage):
         for mat in list(filter(None, asc["costItems"])):
             # If mat dict isn't empty
             matData = list(filter(lambda x: x['id'] == mat["id"], files['MaterialExcelConfigData']))[0]
-            dic = {"Name": textmap[str(matData["nameTextMapHash"])], "TextMapID": matData["nameTextMapHash"], "Count": mat["count"]}
+            dic = {"Name": textmap[str(matData["nameTextMapHash"])], "Id": mat["id"], "Count": mat["count"]}
             ascMats[asc["promoteLevel"]]["Mats"].append(dic)
 
     # Weapon Refinement
