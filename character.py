@@ -171,6 +171,9 @@ def character(textmap, charID, files, textMapLanguage):
         "Vision": textmap[str(charaData['avatarVisionBeforTextMapHash'])],
         "Constellation": textmap[str(charaData['avatarConstellationBeforTextMapHash'])],
         "Region": charaData['avatarAssocType'],
+        "Title": charaData['avatarTitle'],
+        "Native": charaData['avatarNative'],
+        "Detail": charaData['avatarDetail'],
         "VA": {
             "Chinese": textmap[str(charaData['cvChineseTextMapHash'])],
             "Japanese": textmap[str(charaData['cvJapaneseTextMapHash'])],
