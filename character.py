@@ -129,6 +129,10 @@ def character(textmap, charID, files, textMapLanguage):
 
                     skillDict["Param"][key]["Levels"].append(paramlist)
                 indexDesc += 1
+
+                if (indexDesc == 16):
+                    break # for shougun
+
             matList = list(filter(None, skillLevel["costItems"]))
 
             if len(matList) > 0:
@@ -171,9 +175,9 @@ def character(textmap, charID, files, textMapLanguage):
         "Vision": textmap[str(charaData['avatarVisionBeforTextMapHash'])],
         "Constellation": textmap[str(charaData['avatarConstellationBeforTextMapHash'])],
         "Region": charaData['avatarAssocType'],
-        "Title": charaData['avatarTitle'],
-        "Native": charaData['avatarNative'],
-        "Detail": charaData['avatarDetail'],
+        "Title": textmap[str(charaData['avatarTitle'])],
+        "Native": textmap[str(charaData['avatarNative'])],
+        "Detail": textmap[str(charaData['avatarDetail'])],
         "VA": {
             "Chinese": textmap[str(charaData['cvChineseTextMapHash'])],
             "Japanese": textmap[str(charaData['cvJapaneseTextMapHash'])],

@@ -64,11 +64,22 @@ def weapon(textmap, weaponID, files, textMapLanguage):
     refinementDict = {}
     refinementData = list(filter(lambda x: x["id"] == weaponData["skillAffix"][0], files["EquipAffixExcelConfigData"]))
 
-    for ref in "12345":
-        refinementDict[ref] = {}
-        refinementDict[ref]["Name"] = textmap[str(refinementData[int(ref)-1]["nameTextMapHash"])]
-        refinementDict[ref]["Desc"] = textmap[str(refinementData[int(ref)-1]["descTextMapHash"])]
-        refinementDict[ref]["ParamList"] = refinementData[int(ref)-1]["paramList"]
+    if weaponData["rankLevel"] == 1 or weaponData["rankLevel"] == 2:
+        pass
+    else:
+
+        if weaponID == 11412 or weaponID == 11416 or weaponID == 15415: # Refinement Level 1 only Weapons
+            refinementDict["1"] = {}
+            refinementDict["1"]["Name"] = textmap[str(refinementData[0]["nameTextMapHash"])]
+            refinementDict["1"]["Desc"] = textmap[str(refinementData[0]["descTextMapHash"])]
+            refinementDict["1"]["ParamList"] = refinementData[0]["paramList"]
+
+        else:
+            for ref in "12345":
+                refinementDict[ref] = {}
+                refinementDict[ref]["Name"] = textmap[str(refinementData[int(ref)-1]["nameTextMapHash"])]
+                refinementDict[ref]["Desc"] = textmap[str(refinementData[int(ref)-1]["descTextMapHash"])]
+                refinementDict[ref]["ParamList"] = refinementData[int(ref)-1]["paramList"]
     
     json_dict = {
         "Name": textmap[str(weaponData["nameTextMapHash"])],
